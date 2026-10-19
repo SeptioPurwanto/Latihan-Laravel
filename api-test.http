@@ -1,0 +1,85 @@
+@baseUrl = http://127.0.0.1:8000/api
+
+### 1. Register
+POST {{baseUrl}}/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Yohan",
+  "email": "yohan@example.com",
+  "password": "rahasia123",
+  "password_confirmation": "rahasia123"
+}
+
+### 2. Login
+# @name login
+POST {{baseUrl}}/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "yohan@example.com",
+  "password": "rahasia123"
+}
+
+### 3. Lihat profil (butuh token)
+GET {{baseUrl}}/user
+Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+### 4. Logout (butuh token)
+POST {{baseUrl}}/logout
+Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+### 5. Buat kategori
+# @name createCategory
+POST {{baseUrl}}/categories
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Elektronik"
+}
+
+### 6. Daftar kategori
+GET {{baseUrl}}/categories
+Accept: application/json
+
+### 7. Buat produk
+# @name createProduct
+POST {{baseUrl}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "category_id": {{createCategory.response.body.data.id}},
+  "name": "Headphone Nirkabel",
+  "description": "Headphone bluetooth dengan baterai 30 jam.",
+  "price": 450000,
+  "stock": 25
+}
+
+### 8. Daftar produk
+GET {{baseUrl}}/products
+Accept: application/json
+
+### 9. Detail produk
+GET {{baseUrl}}/products/{{createProduct.response.body.data.id}}
+Accept: application/json
+
+### 10. Ubah produk
+PUT {{baseUrl}}/products/{{createProduct.response.body.data.id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Headphone Nirkabel Pro",
+  "price": 520000,
+  "stock": 20
+}
+
+### 11. Hapus produk
+DELETE {{baseUrl}}/products/{{createProduct.response.body.data.id}}
+Accept: application/json
